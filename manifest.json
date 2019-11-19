@@ -1,0 +1,14 @@
+{
+  "name": "Youtube Tiles Size",
+  "version": "1.0",
+  "description": "Youtube Tiles Size",  
+  "permissions": ["activeTab", "declarativeContent", "storage"],
+  "browser_action": { 
+      "default_popup": "popup.html"
+  },
+  "content_scripts": [{
+    "matches": ["*://*.youtube.com/*","*://youtube.com/*"],
+    "js":      ["contentscript.js"]
+  }],
+  "manifest_version": 2
+}
