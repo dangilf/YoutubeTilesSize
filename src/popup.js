@@ -18,8 +18,7 @@ window.onload = function() {
 
 buttonSet.onclick = function(element) {
     var value=inputSize.value;   
-    if(value){
-        console.log(value);
+    if(value){        
         chrome.storage.sync.set({tilesSize: value}, function() {});
     }    
 }

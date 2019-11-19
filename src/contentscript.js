@@ -22,8 +22,7 @@ root.addEventListener("DOMSubtreeModified", e => {
 
 chrome.storage.onChanged.addListener(function(changes, namespace) {  
   if(changes["tilesSize"] && changes["tilesSize"].newValue)
-  {
-    console.log(changes["tilesSize"].newValue)
+  {    
     setStyleSize(changes["tilesSize"].newValue);
   }
 });
