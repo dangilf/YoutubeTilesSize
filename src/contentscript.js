@@ -1,9 +1,11 @@
 
 let root = document.getElementById('primary').firstChild;
 
-function setStyleSize(size){ 
-  chrome.storage.sync.set({tilesSize: size}, function() {});  
-  root.style.setProperty('--ytd-rich-grid-items-per-row', size);
+function setStyleSize(size){    
+  var sizeValueOld=root.style.getPropertyValue('--ytd-rich-grid-items-per-row'); 
+  if(sizeValueOld!=size){             
+    root.style.setProperty('--ytd-rich-grid-items-per-row', size);      
+  }
 }
 
 root.addEventListener("DOMSubtreeModified", e => { 
