@@ -1,22 +1,29 @@
 
 let root = document.getElementById('primary').firstChild;
 
-function setStyleCount(count){ 
-  localStorage.setItem('youtube.tiles-count', count);
-  root.style.setProperty('--ytd-rich-grid-items-per-row', count);
+function setStyleSize(size){ 
+  chrome.storage.sync.set({tilesSize: size}, function() {});  
+  root.style.setProperty('--ytd-rich-grid-items-per-row', size);
 }
 
-root.addEventListener("DOMSubtreeModified", e => {
-  var countValueOld=root.style.getPropertyValue('--ytd-rich-grid-items-per-row');
-  var countValue=localStorage.getItem('youtube.tiles-count');
-  if(countValueOld!=countValue)
-  {
-    root.style.setProperty('--ytd-rich-grid-items-per-row',countValue)
-  }
+root.addEventListener("DOMSubtreeModified", e => { 
+  chrome.storage.sync.get(['tilesSize'], function(result) {
+    if(result.tilesSize){    
+      var sizeValueOld=root.style.getPropertyValue('--ytd-rich-grid-items-per-row');
+      var sizeValue=result.tilesSize;
+      if(sizeValueOld!=sizeValue)
+      {
+        root.style.setProperty('--ytd-rich-grid-items-per-row',sizeValue)
+      }
+    }    
+  });     
+  
 });
 
-chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
-  if(request.action == "SET"){
-    setStyleCount(request.count);
+chrome.storage.onChanged.addListener(function(changes, namespace) {  
+  if(changes["tilesSize"] && changes["tilesSize"].newValue)
+  {
+    console.log(changes["tilesSize"].newValue)
+    setStyleSize(changes["tilesSize"].newValue);
   }
 });

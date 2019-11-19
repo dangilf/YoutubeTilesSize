@@ -1,23 +1,26 @@
-let inputCount=document.getElementById("tiles-count");
-let buttonSet=document.getElementById("set-count");
+let inputSize=document.getElementById("tiles-size-input");
+let buttonSet=document.getElementById("tiles-size-button");
 
 
 window.onload = function() {
-    console.log(localStorage.getItem('youtube.tiles-count'));
-    if(!localStorage.getItem('youtube.tiles-count')){
-        localStorage.setItem('youtube.tiles-count',4)
-    }
-    inputCount.value=localStorage.getItem('youtube.tiles-count')
+    var tilesSize;
+    chrome.storage.sync.get(['tilesSize'], function(result) {        
+        tilesSize=result.tilesSize;
+        if(!result.tilesSize)
+        {
+            chrome.storage.sync.set({tilesSize: 4}, function() {});
+            tilesSize=4;
+        }
+        inputSize.value=tilesSize
+    });    
 }
 
 
 buttonSet.onclick = function(element) {
-    var value=inputCount.value;   
+    var value=inputSize.value;   
     if(value){
-        localStorage.setItem('youtube.tiles-count',value)
-        chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-            chrome.tabs.sendMessage(tabs[0].id, {action: "SET", count: value}, function(response) {});
-        });
+        console.log(value);
+        chrome.storage.sync.set({tilesSize: value}, function() {});
     }    
 }
 
