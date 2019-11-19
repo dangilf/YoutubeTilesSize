@@ -3,9 +3,8 @@ let buttonSet=document.getElementById("tiles-size-button");
 
 
 window.onload = function() {
-    var tilesSize;
     chrome.storage.sync.get(['tilesSize'], function(result) {        
-        tilesSize=result.tilesSize;
+        var tilesSize=result.tilesSize;
         if(!result.tilesSize)
         {
             chrome.storage.sync.set({tilesSize: 4}, function() {});
